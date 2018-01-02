@@ -1,0 +1,49 @@
+{
+  "bucket":"live-stream-genre",
+  "loop":1,
+  "minutes":60,
+  "streams":[
+    {
+      "id":3423,
+      "name":"bossajazzbrasil",
+      "genre":"BossaNova",
+      "type":"acc",
+      "url":"http://ice64.securenetsystems.net/BGRLIVE",
+      "status":"Success",
+      "message":"Successful recording",
+      "schedules":[
+        {
+          "dh_initial":"2017-12-13T18:10:53",
+          "dh_final":"2017-12-13T18:10:53",
+          "link":"https://s3-sa-east-1.amazonaws.com/live-stream-genre/bossa-nova/44b47d34-637f-4c18-b638-9141e29420b7.mp3"
+        },
+        {
+          "dh_initial":"2017-12-13T18:10:53",
+          "dh_final":"2017-12-13T18:10:53",
+          "link":"https://s3-sa-east-1.amazonaws.com/live-stream-genre/bossa-nova/44b47d34-637f-4c18-b638-9141e29420b7.mp3"
+        }
+      ]
+    },
+    {
+      "id":3423,
+      "name":"Black Gospel Radio - Philadelphia",
+      "genre":"BlackGospel",
+      "type":"acc",
+      "url":"http://ice64.securenetsystems.net/BGRLIVE",
+      "status":"Success",
+      "message":"Successful recording",
+      "schedules":[
+        {
+          "dh_initial":"2017-12-13T18:10:53",
+          "dh_final":"2017-12-13T18:10:53",
+          "link":"https://s3-sa-east-1.amazonaws.com/live-stream-genre/black-gospel/44b47d34-637f-4c18-b638-9141e29420b7.mp3"
+        },
+        {
+          "dh_initial":"2017-12-13T18:10:53",
+          "dh_final":"2017-12-13T18:10:53",
+          "link":"https://s3-sa-east-1.amazonaws.com/live-stream-genre/black-gospel/44b47d34-637f-4c18-b638-9141e29420b7.mp3"
+        }
+      ]
+    }
+  ]
+}
