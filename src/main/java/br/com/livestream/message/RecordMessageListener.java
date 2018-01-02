@@ -45,6 +45,7 @@ public class RecordMessageListener {
     public void receiveMessage(Record record) {
 
         List<Record> records = this.repository.findByName(record.getName());
+        Schedule schedule = null;
         if (records.size() > 0) {
             Record r = records.get(0);
             record.setId(r.getId());
@@ -65,30 +66,22 @@ public class RecordMessageListener {
         //timer.scheduleAtFixedRate(timerTask, 0, 1000);
 
         try {
-
-            Schedule schedule = new Schedule();
+            schedule = new Schedule();
             schedule.setDhInitial(LocalDateTime.now().toString());
 
-            InputStream is = null;
-            OutputStream os = null;
-            for (int i = 1; i <= record.getLoop(); i++) {
-                log.info("Loop --> [" +  i + "]");
-                log.info("Gravando ..." + record.toString());
-                is = new URL(record.getUrl()).openStream();
-
-                record.createFile();
-                os = new FileOutputStream(record.getFile());
-                byte[] buffer = new byte[1 * Constants.MB];
-                int bytesRead;
+            InputStream is = new URL(record.getUrl()).openStream();;
+            log.info("Gravando ..." + record.toString());
+            record.createFile();
+            OutputStream os = new FileOutputStream(record.getFile());
+            byte[] buffer = new byte[1 * Constants.MB];
+            int bytesRead;
                 //read from is to buffer
                 while((bytesRead = is.read(buffer)) !=-1){
                     os.write(buffer, 0, bytesRead);
                     if (time[0] == record.getMinutes()) {
                         time[0] = 0;
-                        if (i == record.getLoop()) {
-                            log.warn("Cancelando o timer");
-                            timer.cancel();
-                        }
+                        log.warn("Cancelando o timer");
+                        timer.cancel();
                         //Record to AWS
                         log.info("::::::::::::::: UPLOAD S3 :::::::::::::::");
                         schedule.setDhFinal(LocalDateTime.now().toString());
@@ -99,7 +92,6 @@ public class RecordMessageListener {
                         break;
                     }
                 }
-            }
 
             is.close();
             os.flush();
@@ -108,8 +100,8 @@ public class RecordMessageListener {
 
         } catch (Exception e) {
             timer.cancel();
-            record.setStatus(Status.Error.name());
-            record.setMessage(e.getMessage());
+            schedule.setStatus(Status.Error.name());
+            schedule.setMessage(e.getMessage());
             log.error("Erro gravacao Stream --> " + record.getName() + " MSG: " + e.getMessage());
             e.printStackTrace();
 

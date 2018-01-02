@@ -2,6 +2,7 @@ package br.com.livestream.api;
 
 import br.com.livestream.model.Record;
 import br.com.livestream.repository.RecordRepository;
+import br.com.livestream.service.ScheduleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,9 @@ public class LiveStreamController {
 
     @Autowired
     private JmsTemplate jmsTemplate;
+
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
 
     @RequestMapping(value = "/live_streams", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Record>> findAll(@RequestParam(value = "name", defaultValue = "") String name,
@@ -57,7 +62,7 @@ public class LiveStreamController {
     @ResponseStatus(HttpStatus.CREATED)
     public void insert(@RequestBody Record record) {
         log.info("POST /live_streams | RequestBody --> " +  record);
-        this.jmsTemplate.convertAndSend("record", record);
+        this.taskExecutor.execute(new ScheduleService(record, this.jmsTemplate));
     }
 
 }

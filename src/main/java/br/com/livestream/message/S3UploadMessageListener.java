@@ -30,8 +30,8 @@ public class S3UploadMessageListener {
                     Genre.getGenre(record.getGenre()).getDescription() + "/" + record.getUuid() + "." + record.getType().name(), record.getFile());
 
         } catch (AmazonS3Exception e) {
-            record.setStatus(Status.Error.name());
-            record.setMessage(e.getMessage());
+            //record.setStatus(Status.Error.name());
+            //record.setMessage(e.getMessage());
             log.error("Erro ao fazer upload para o amazonS3 --> " + record.getName() + " MSG: " + e.getMessage());
             e.printStackTrace();
         }

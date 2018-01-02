@@ -41,12 +41,6 @@ public class Record {
     public Type type;
 
     @DynamoDBAttribute
-    public String status;
-
-    @DynamoDBAttribute
-    public String message;
-
-    @DynamoDBAttribute
     public List<Schedule> schedules = new ArrayList<>();
 
     @DynamoDBIgnore
@@ -56,8 +50,6 @@ public class Record {
     private File file;
 
     public Record() {
-        this.status = Status.Success.name();
-        this.message = Status.Success.getDescription();
     }
 
     public Record(String name, String genre, String url, Type type) {
@@ -65,8 +57,6 @@ public class Record {
         this.genre = genre;
         this.type = type;
         this.url = url;
-        this.status = Status.Success.name();
-        this.message = Status.Success.getDescription();
     }
 
 
@@ -135,22 +125,6 @@ public class Record {
         this.url = url;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public List<Schedule> getSchedules() {
         return schedules;
     }
@@ -191,8 +165,6 @@ public class Record {
                 ", genre=" + genre +
                 ", type=" + type +
                 ", url='" + url + '\'' +
-                ", status='" + status + '\'' +
-                ", message='" + message + '\'' +
                 ", schedules=" + schedules +
                 ", uuid='" + uuid + '\'' +
                 '}';
