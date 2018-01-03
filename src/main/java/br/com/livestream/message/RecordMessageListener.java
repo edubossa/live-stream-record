@@ -75,23 +75,23 @@ public class RecordMessageListener {
             OutputStream os = new FileOutputStream(record.getFile());
             byte[] buffer = new byte[1 * Constants.MB];
             int bytesRead;
-                //read from is to buffer
-                while((bytesRead = is.read(buffer)) !=-1){
-                    os.write(buffer, 0, bytesRead);
-                    if (time[0] == record.getMinutes()) {
-                        time[0] = 0;
-                        log.warn("Cancelando o timer");
-                        timer.cancel();
-                        //Record to AWS
-                        log.info("::::::::::::::: UPLOAD S3 :::::::::::::::");
-                        schedule.setDhFinal(LocalDateTime.now().toString());
-                        schedule.setLink(linkS3 + record.getBucket() + "/" + Genre.getGenre(record.getGenre()).getDescription()
-                                + "/" + record.getUuid() + "." + record.getType().name());
-                        record.getSchedules().add(schedule);
-                        jmsTemplate.convertAndSend("upload-s3", record);
-                        break;
-                    }
+            //read from is to buffer
+            while((bytesRead = is.read(buffer)) !=-1){
+                os.write(buffer, 0, bytesRead);
+                if (time[0] == record.getMinutes()) {
+                    time[0] = 0;
+                    log.warn("Cancelando o timer");
+                    timer.cancel();
+                    //Record to AWS
+                    log.info("::::::::::::::: UPLOAD S3 :::::::::::::::");
+                    schedule.setDhFinal(LocalDateTime.now().toString());
+                    schedule.setLink(linkS3 + record.getBucket() + "/" + Genre.getGenre(record.getGenre()).getDescription()
+                            + "/" + record.getUuid() + "." + record.getType().name());
+                    record.getSchedules().add(schedule);
+                    jmsTemplate.convertAndSend("upload-s3", record);
+                    break;
                 }
+            }
 
             is.close();
             os.flush();
